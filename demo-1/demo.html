@@ -29,19 +29,17 @@ font-weight: bolder; padding-left: 5px; } .articlebelong { font-size: 13px; marg
         </div>
     </div>
     <script>
-        //不能修改的几个参数图片的宽度calc(100% - 10px),column-gap: 20px;
-        //这个init函数需要等图片载入完全才能计算，因为计算需要图片的宽度来推算出分栏的一栏宽度
+        //不能修改的几个参数,column-gap: 20px;
         var countObj = {};
         function init() {
             //计算总共多少栏
             countObj = {};
             var text = document.getElementById('text');
-            var themeImage = document.getElementById('themeImage');
             var textWidth = text.scrollWidth;
-            //var textViewWidth = text.offsetWidth;
-            countObj.count = Math.floor((textWidth + 20) / (themeImage.offsetWidth + 10 + 20));
+            var textViewWidth = Math.floor((text.offsetWidth - 20)/2);
+            countObj.count = Math.floor((textWidth + 20) / (textViewWidth + 20));
             countObj.current_count = 2;//首页有两栏，这里表示右边栏当前显示第几栏
-            countObj.flipWidth = themeImage.offsetWidth + 10 + 20;
+            countObj.flipWidth = textViewWidth + 20;
             countObj.left = 0;
             if (countObj.count > countObj.current_count) {
                 // 可以翻页
