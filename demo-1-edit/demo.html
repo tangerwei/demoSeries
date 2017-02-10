@@ -84,6 +84,7 @@
     </div>
     <script>
         //设置scroll函数执行的时间间隔
+        var initbool = true;
         var interval = 300;//ms
         var doBoolean = true;
         var countObj = {};
@@ -119,9 +120,12 @@
                 document.documentElement.scrollLeft = countObj.flipWidth * countObj.current_count;
             }
         }
+        //禁止滚动条触发的事件
+        function disableScroll(){
+            document.body.onscroll = '';
+        }
         function _scroll(event) {
             //注意onscroll的执行次数, 使用函数节流
-            console.log("sdasdasdas");
             if (doBoolean) {
                 doBoolean = false;
                 setTimeout(function () {
@@ -134,19 +138,23 @@
                     setTimeout(function () {
                         //延迟20ms 执行判断翻页方向
                         var pageX = document.body.getBoundingClientRect().left;
-                        console.log(1);
                         fgoPage(scrollX > pageX);//true  向右，false 向左
-                        console.log(2);
                     }, 20);
                 } else {
                     //chrome
-                    console.log(1);
+                    if(initbool == true && document.body.scrollLeft > 10){
+                        initbool = false;
+                        document.body.scrollLeft = 0;
+                        countObj.current_count = 0;
+                        return;
+                    }
+                    if(initbool == true){
+                        initbool = false;//防止滚动条位置为0，刷新
+                    }
                     scrollX = document.body.getBoundingClientRect().left;
                     setTimeout(function () {
                         //延迟20ms 执行判断翻页方向
                         var pageX = document.body.getBoundingClientRect().left;
-                        console.log(scrollX);
-                        console.log(pageX);
                         goPage(scrollX > pageX);//true  向右，false 向左
                     }, 20);
                 }
